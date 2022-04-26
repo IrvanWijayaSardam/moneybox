@@ -73,10 +73,34 @@
         android:hint="********"
         android:inputType="textPassword"
         android:padding="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegister"
+        app:layout_constraintBottom_toTopOf="@+id/linearCheckbox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
+    <LinearLayout
+        android:id="@+id/linearCheckbox"
+        android:layout_width="330dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnRegister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
+        android:background="@drawable/et_bg">
+
+        <CheckBox
+            android:id="@+id/checkbox_aggreement"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_lisence_agreement"
+            android:padding="5dp"
+            android:textSize="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Dengan ini anda menyetujui syarat dan ketentuan "
+            />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/edt_alamat"

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/list_item"
+        android:id="@+id/list_item_akun"
         android:background="@drawable/bg_cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,34 +21,55 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_jumlahDiSetor"
+                android:id="@+id/tv_view_nama"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginLeft="20dp"
-                android:text="Jumlah Transaksi"
+                android:text="Nama "
                 android:textSize="15sp"
                 android:textStyle="bold"/>
             <TextView
                 android:layout_marginLeft="20dp"
-                android:id="@+id/tv_tgl_setor"
+                android:id="@+id/tv_view_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Tanggal Transaksi"/>
+                android:text="Email"/>
 
             <TextView
                 android:layout_marginLeft="20dp"
-                android:id="@+id/tv_jenis_transaksi"
+                android:id="@+id/tv_view_Alamat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Jenis Transaksi"/>
+                android:text="Alamat"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/tv_view_JK"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Jenis Kelamin"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/tv_view_nope"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Nomor Telepon"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/tv_view_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Password"/>
         </LinearLayout>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="6"
-            app:srcCompat="@drawable/upmoney"/>
+            app:srcCompat="@drawable/man2"/>
     </LinearLayout>
 </ScrollView>

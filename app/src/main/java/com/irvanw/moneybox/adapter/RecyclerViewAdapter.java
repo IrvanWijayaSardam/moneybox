@@ -23,6 +23,7 @@ import com.irvanw.moneybox.model.data_akun;
 import com.irvanw.moneybox.model.data_keuangan;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
@@ -30,7 +31,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context context;
 
     public interface dataListener{
-        //void onDeleteData(data_akun data,int position);
+        void onDeleteData(data_keuangan data,int position);
     }
 
     dataListener listener;
@@ -53,9 +54,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         final String jumlahSetoran = listTransaksi.get(position).getJmlTambah();
         final String tglSetoran = listTransaksi.get(position).getTanggal();
+        final String jenisTransaksi = listTransaksi.get(position).getJenisTransaksi();
 
         holder.jmlSetor.setText("Rp. "+jumlahSetoran);
-        holder.tglSetor.setText("Tanggal "+tglSetoran);
+        holder.tglSetor.setText("Tanggal : "+tglSetoran);
+        holder.jenisTransaksi.setText("Jenis Transaksi : "+jenisTransaksi);
 
         holder.ListItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -70,6 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                 Bundle bundle = new Bundle();
                                 bundle.putString("dataJmlTransaksi",listTransaksi.get(position).getJmlTambah());
                                 bundle.putString("dataTglTransaksi",listTransaksi.get(position).getTanggal());
+                                bundle.putString("dataJenisTransaksi",listTransaksi.get(position).getJenisTransaksi());
                                 bundle.putString("getPrimaryKey",listTransaksi.get(position).getKey());
                                 Intent intent = new Intent(view.getContext(), ActivityUpdateTransaksi.class);
                                 intent.putExtras(bundle);
@@ -77,7 +81,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                 break;
 
                             case 1:
-                                //listener.onDeleteData(listAkun.get(position),position);
+                                listener.onDeleteData(listTransaksi.get(position),position);
                                 break;
                         }
                     }
@@ -96,7 +100,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView jmlSetor,tglSetor;
+        private TextView jmlSetor,tglSetor,jenisTransaksi;
         private LinearLayout ListItem;
 
         public ViewHolder(@NonNull View itemView) {
@@ -104,6 +108,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             jmlSetor = itemView.findViewById(R.id.tv_jumlahDiSetor);
             tglSetor = itemView.findViewById(R.id.tv_tgl_setor);
+            jenisTransaksi = itemView.findViewById(R.id.tv_jenis_transaksi);
 
             ListItem = itemView.findViewById(R.id.list_item);
 

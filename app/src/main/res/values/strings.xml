@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">moneybox</string>
     <string name="login_now">Login Now</string>
+    <string-array name="spinnerOptionsItem">
+        <item>Setor Uang</item>
+        <item>Tarik Uang</item>
+    </string-array>
 </resources>

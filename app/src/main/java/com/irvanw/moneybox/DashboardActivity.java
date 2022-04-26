@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private ConstraintLayout Transaksi,Deposit;
+    private ConstraintLayout Transaksi,Deposit,Register,ListAkun;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +21,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         Transaksi = findViewById(R.id.constraint_transaksi);
         Deposit = findViewById(R.id.constraint_deposit);
+        Register = findViewById(R.id.constraint_settings);
+        ListAkun = findViewById(R.id.constraint_listAkun);
 
         Deposit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,6 +37,22 @@ public class DashboardActivity extends AppCompatActivity {
                 goToTransaksi();
             }
         });
+
+        Register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToRegister();
+            }
+        });
+
+        ListAkun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToListAkun();
+            }
+        });
+
+
     }
     public void goToDeposit(){
         Intent intent = new Intent(this, DepositActivity.class);
@@ -43,4 +63,15 @@ public class DashboardActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ListDataTransaksi.class);
         startActivity(intent);
     }
+
+    public void goToRegister(){
+        Intent intent = new Intent(this,RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToListAkun(){
+        Intent intent = new Intent(this,ListDataAkun.class);
+        startActivity(intent);
+    }
+
 }

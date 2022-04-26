@@ -13,7 +13,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,7 +39,7 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
 
     private DatabaseReference reference;
     private ArrayList<data_keuangan> dataKeuangan;
-
+    private Spinner spOptionList;
 
 
     @Override
@@ -45,6 +47,7 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_data_transaksi);
 
+        spOptionList = findViewById(R.id.spOptionList);
         recyclerView = findViewById(R.id.datalist);
         EditText searchView = findViewById(R.id.etSearch);
         MyRecyclerView();
@@ -73,10 +76,21 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
         });
 
 
+        spOptionList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                searchDataByJT(spOptionList.getSelectedItem().toString());
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                GetData();
+            }
+        });
+
+
 
     }
-    private void GetData() {
-        Toast.makeText(getApplicationContext(),"Mohon Tunggu Sebentar ...",Toast.LENGTH_SHORT).show();
+    public void GetData() {
+        //Toast.makeText(getApplicationContext(),"Mohon Tunggu Sebentar ...",Toast.LENGTH_SHORT).show();
 
         reference = FirebaseDatabase.getInstance().getReference();
         reference.child("Deposit").child("Transaksi")
@@ -92,7 +106,7 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
                         }
                         adapter = new RecyclerViewAdapter(dataKeuangan,ListDataTransaksi.this);
                         recyclerView.setAdapter(adapter);
-                        Toast.makeText(getApplicationContext(),"Data Berhasil Dimuat",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"Data Berhasil Dimuat",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -138,5 +152,47 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
                         Log.e("MyListActivity",databaseError.getDetails()+" "+databaseError.getMessage());
                     }
                 });
+    }
+
+    private void searchDataByJT(String JT){
+        reference = FirebaseDatabase.getInstance().getReference();
+        reference.child("Deposit").child("Transaksi").orderByChild("jenisTransaksi").startAt(JT).endAt(JT)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        dataKeuangan = new ArrayList<>();
+
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            data_keuangan akun = snapshot.getValue(data_keuangan.class);
+                            akun.setKey(snapshot.getKey());
+                            dataKeuangan.add(akun);
+                        }
+                        adapter = new RecyclerViewAdapter(dataKeuangan,ListDataTransaksi.this);
+                        recyclerView.setAdapter(adapter);
+                        Toast.makeText(getApplicationContext(),"Data Berhasil Dimuat",Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(),"Data Gagal Dimuat",Toast.LENGTH_LONG).show();
+                        Log.e("MyListActivity",databaseError.getDetails()+" "+databaseError.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void onDeleteData(data_keuangan data, int position) {
+        if(reference != null){
+            reference.child("Deposit")
+                    .child("Transaksi")
+                    .child(data.getKey())
+                    .removeValue()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(getApplicationContext(),"Data Berhasil Dihapus",Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }
     }
 }

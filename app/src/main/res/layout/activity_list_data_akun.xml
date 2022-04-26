@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListDataTransaksi"
+    tools:context=".ListDataAkun"
     android:background="@drawable/bg_cardview"
     android:layout_margin="8dp">
 
@@ -16,18 +16,8 @@
         android:padding="10dp"
         android:layout_marginBottom="20dp"/>
 
-    <Spinner
-        android:id="@+id/spOptionList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="10dp"
-        android:layout_weight="1"
-        android:entries="@array/spinnerOptionsItem"
-        tools:ignore="MissingConstraints" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/datalist"
+        android:id="@+id/datalistAkun"
         android:layout_width="400dp"
         android:layout_height="match_parent"
         android:layout_below="@+id/etSearch"

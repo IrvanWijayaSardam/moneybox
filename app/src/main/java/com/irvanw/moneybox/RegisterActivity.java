@@ -6,9 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -23,10 +25,12 @@ import com.irvanw.moneybox.model.data_akun;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText nama,email,nope,address,password;
-    private TextView loginHere;
+    private TextView loginHere,tvAggrement;
     private Button Register;
     private RadioButton rbLaki,rbPerempuan;
     private String getNama,getEmail,getNope,getAddress,getPassword,getJk;
+    private CheckBox aggrement;
+
 
     DatabaseReference getReference;
 
@@ -40,11 +44,15 @@ public class RegisterActivity extends AppCompatActivity {
         nope = findViewById(R.id.edt_phone);
         address = findViewById(R.id.edt_alamat);
         password = findViewById(R.id.edt_password);
+        tvAggrement = findViewById(R.id.tv_lisence_agreement);
 
         loginHere = findViewById(R.id.tv_login_disini);
 
         rbLaki = findViewById(R.id.rbLaki);
         rbPerempuan = findViewById(R.id.rbPerempuan);
+
+        aggrement = findViewById(R.id.checkbox_aggreement);
+
 
         Register = findViewById(R.id.btnRegister);
 
@@ -54,13 +62,19 @@ public class RegisterActivity extends AppCompatActivity {
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getNama = nama.getText().toString();
-                getEmail = email.getText().toString();
-                getNope = nope.getText().toString();
-                getAddress = address.getText().toString();
-                getPassword = password.getText().toString();
+                if(aggrement.isChecked()){
+                    getNama = nama.getText().toString();
+                    getEmail = email.getText().toString();
+                    getNope = nope.getText().toString();
+                    getAddress = address.getText().toString();
+                    getPassword = password.getText().toString();
 
-                checkJk();
+                    checkJk();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Anda harus menyetujui lisence & agreement !!",Toast.LENGTH_SHORT).show();
+                    tvAggrement.setTextColor(Color.parseColor("#FF0000"));
+                }
+
 
 
             }
