@@ -11,6 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.4">
+        <Button
+            android:id="@+id/btnLogoutTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout Test"
+            app:layout_constraintBottom_toBottomOf="@id/tvInfoSaldo"
+            app:layout_constraintEnd_toEndOf="@id/tvInfoSaldo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/background_top"
+            />
 
         <ImageView
             android:id="@+id/imageView"
@@ -20,8 +31,10 @@
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.727"
             app:srcCompat="@drawable/background_top" />
 
         <ImageView
@@ -296,6 +309,8 @@
 
 
         </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"

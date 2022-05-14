@@ -143,7 +143,7 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
                         }
                         adapter = new RecyclerViewAdapter(dataKeuangan,ListDataTransaksi.this);
                         recyclerView.setAdapter(adapter);
-                        Toast.makeText(getApplicationContext(),"Data Berhasil Dimuat",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"Data Berhasil Dimuat",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

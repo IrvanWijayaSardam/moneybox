@@ -7,6 +7,7 @@ public class data_akun {
     private String address;
     private String password;
     private String jk;
+    private String gambar;
     private String key;
 
     public data_akun() {
@@ -22,13 +23,22 @@ public class data_akun {
         this.jk = jk;
     }
 
-    public data_akun(String nama, String email, String nope, String address, String password,String jk) {
+    public data_akun(String nama, String email, String nope, String address, String password,String jk,String gambar) {
         this.nama = nama;
         this.email = email;
         this.nope = nope;
         this.address = address;
         this.password = password;
         this.jk = jk;
+        this.gambar = gambar;
+    }
+
+    public String getGambar() {
+        return gambar;
+    }
+
+    public void setGambar(String gambar) {
+        this.gambar = gambar;
     }
 
     public String getNama() {

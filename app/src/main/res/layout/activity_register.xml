@@ -77,6 +77,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <LinearLayout
+        android:id="@+id/linearFoto"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearCheckbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        >
+
+        <ImageButton
+            android:id="@+id/IBFoto"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_camera_alt_24"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ambil Foto"
+            android:textSize="20dp"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            />
+
+
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/linearCheckbox"
         android:layout_width="330dp"

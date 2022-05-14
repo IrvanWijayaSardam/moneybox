@@ -65,11 +65,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Password"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btnUpdateUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update"
+                    android:background="@drawable/btn_bg"
+                    />
+                <Button
+                    android:layout_marginLeft="30dp"
+                    android:id="@+id/btnDeleteUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delete"
+                    android:background="@drawable/btn_bg"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
         <ImageView
+            android:id="@+id/imgProfile"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="6"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/man2"/>
     </LinearLayout>
 </ScrollView>
