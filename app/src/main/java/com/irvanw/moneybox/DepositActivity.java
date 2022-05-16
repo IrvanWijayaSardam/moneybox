@@ -1,5 +1,6 @@
 package com.irvanw.moneybox;
 
+import static android.content.ContentValues.TAG;
 import static android.text.TextUtils.isEmpty;
 
 import androidx.annotation.NonNull;
@@ -20,15 +21,22 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.irvanw.moneybox.model.data_keuangan;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
 
 public class DepositActivity extends AppCompatActivity {
 
@@ -38,11 +46,17 @@ public class DepositActivity extends AppCompatActivity {
     private String getTambah,getTanggal,getTanggalDP,getJenisTransaksi;
     DatePickerDialog datePickerDialog;
     DatabaseReference getReference;
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore fStore;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deposit);
+
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
 
         Tambah = findViewById(R.id.btnTambah);
         spJenis = findViewById(R.id.spOption);
@@ -98,21 +112,64 @@ public class DepositActivity extends AppCompatActivity {
         if(isEmpty(getTambah) || isEmpty(getTanggalDP) || isEmpty(getJenisTransaksi)) {
             Toast.makeText(DepositActivity.this,"Data Tidak Boleh Kosong ! Silahkan Cek Kembali",Toast.LENGTH_SHORT).show();
         } else {
-            getReference.child("Deposit").child("Transaksi").push()
-                    .setValue(new data_keuangan(getTambah,getTanggalDP,getJenisTransaksi));
-            Toast.makeText(DepositActivity.this, "Data tersimpan",Toast.LENGTH_SHORT).show();
-            goToDashboard();
+            userID = fAuth.getCurrentUser().getUid();
+            Integer transactionID = generate_random(1,999999999);
+            DocumentReference documentReference = fStore.collection("transaksi").document(userID).collection("detail transaksi").document("Deposit-"+transactionID.toString());
+            Map<String,Object> transaksi = new HashMap<>();
+
+            transaksi.put("User ID",userID);
+            transaksi.put("Jenis Transaksi",getJenisTransaksi);
+            transaksi.put("Jumlah Transaksi",getTambah);
+            transaksi.put("Tanggal Transaksi",getTanggalDP);
+            documentReference.set(transaksi).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Log.d(TAG,"onSuccess : transaction created for"+userID);
+                    Toast.makeText(DepositActivity.this, "Data tersimpan",Toast.LENGTH_SHORT).show();
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG,"onFailure : "+ e.toString());
+                }
+            });
+
         }
+    }
+
+    public int generate_random(int min, int max) {
+        return new Random().nextInt((max - min) + 1) + min;
     }
 
     private void checkPenarikan() {
         if(isEmpty(getTambah) || isEmpty(getTanggalDP) || isEmpty(getJenisTransaksi)) {
             Toast.makeText(DepositActivity.this,"Data Tidak Boleh Kosong ! Silahkan Cek Kembali",Toast.LENGTH_SHORT).show();
         } else {
-            getReference.child("Deposit").child("Transaksi").push()
-                    .setValue(new data_keuangan("-"+getTambah,getTanggalDP,getJenisTransaksi));
-            Toast.makeText(DepositActivity.this, "Data tersimpan",Toast.LENGTH_SHORT).show();
-            goToDashboard();
+            userID = fAuth.getCurrentUser().getUid();
+            Map<String,Object> transaksi = new HashMap<>();
+            Integer transactionID = generate_random(1,999999999);
+            DocumentReference documentReference = fStore.collection("transaksi").document(userID).collection("detail transaksi").document("Penarikan-"+transactionID.toString());
+
+            transaksi.put("User ID",userID);
+            transaksi.put("Jenis Transaksi",getJenisTransaksi);
+            transaksi.put("Jumlah Transaksi",getTambah);
+            transaksi.put("Tanggal Transaksi",getTanggalDP);
+
+
+            documentReference.set(transaksi).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Log.d(TAG,"onSuccess : transaction created for"+userID);
+                    Toast.makeText(DepositActivity.this, "Data tersimpan",Toast.LENGTH_SHORT).show();
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG,"onFailure : "+ e.toString());
+                }
+            });
         }
     }
 

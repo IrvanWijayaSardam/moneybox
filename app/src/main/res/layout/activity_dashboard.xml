@@ -5,82 +5,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DashboardActivity">
+    tools:context=".DashboardActivity"
+    android:background="@color/colorPrimary"
+    >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.4">
-        <Button
-            android:id="@+id/btnLogoutTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout Test"
-            app:layout_constraintBottom_toBottomOf="@id/tvInfoSaldo"
-            app:layout_constraintEnd_toEndOf="@id/tvInfoSaldo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/background_top"
-            />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.727"
-            app:srcCompat="@drawable/background_top" />
+        <LinearLayout
+            android:layout_width="240dp"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:layout_margin="20dp">
+            <TextView
+                android:id="@+id/tv_nama_dashboard"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Hi , Irvan"
+                android:textColor="#ffffff"
+                android:textSize="12sp"
+                android:textStyle="normal"
+                />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="114dp"
-            android:layout_height="125dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/woman" />
+            <TextView
+                android:id="@+id/tvInfoSaldo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jumlah Saldo Anda "
+                />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hi , Irvan"
-            android:textColor="#ffffff"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.129"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            <TextView
+                android:id="@+id/tv_jumlahSaldo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp. 1.000.000 "
+                />
 
-        <TextView
-            android:id="@+id/tvInfoSaldo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jumlah Saldo Anda "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.163"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="200dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_jumlahSaldo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rp. 1.000.000 "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.146"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvInfoSaldo" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_marginTop="20dp"
+                android:id="@+id/img_ppDashboard"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:src="@drawable/woman"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FF000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.905"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/woman"
+                />
+
+            <Button
+                android:id="@+id/btnLogoutTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logout Test"
+                app:srcCompat="@drawable/background_top" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
