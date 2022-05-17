@@ -212,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
-                    android:text="Register Akun"
+                    android:text="Pengaturan Akun"
                     android:textColor="#0020bf"
                     android:textSize="18sp"
                     android:textStyle="bold"

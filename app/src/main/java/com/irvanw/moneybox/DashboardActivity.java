@@ -26,8 +26,8 @@ import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private ConstraintLayout Transaksi,Deposit,Register,ListAkun;
-    private TextView tvNama;
+    private ConstraintLayout Transaksi,Deposit,Settings,ListAkun;
+    private TextView tvNama,tvEmail,tvNoTelp,tvAlamat,tvPassword;
     private ImageView imgPp;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
@@ -51,7 +51,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         Transaksi = findViewById(R.id.constraint_transaksi);
         Deposit = findViewById(R.id.constraint_deposit);
-        Register = findViewById(R.id.constraint_settings);
+        Settings = findViewById(R.id.constraint_settings);
         ListAkun = findViewById(R.id.constraint_listAkun);
         btnLogoutTest = findViewById(R.id.btnLogoutTest);
 
@@ -79,10 +79,10 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        Register.setOnClickListener(new View.OnClickListener() {
+        Settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToRegister();
+                goToSettings();
             }
         });
 
@@ -128,6 +128,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void goToRegister(){
         Intent intent = new Intent(this,RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToSettings(){
+        Intent intent = new Intent(this,AccountActivity.class);
         startActivity(intent);
     }
 
