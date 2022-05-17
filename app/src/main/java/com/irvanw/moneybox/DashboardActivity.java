@@ -45,6 +45,10 @@ public class DashboardActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
+        if(fAuth.getCurrentUser() == null){
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            finish();
+        }
 
         userId = fAuth.getCurrentUser().getUid();
 
