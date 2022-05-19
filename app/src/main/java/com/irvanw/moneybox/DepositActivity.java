@@ -151,9 +151,11 @@ public class DepositActivity extends AppCompatActivity {
             Integer transactionID = generate_random(1,999999999);
             DocumentReference documentReference = fStore.collection("transaksi").document(userID).collection("detail transaksi").document("Penarikan-"+transactionID.toString());
 
+
+            String penarikan = "-"+getTambah;
             transaksi.put("User ID",userID);
             transaksi.put("Jenis Transaksi",getJenisTransaksi);
-            transaksi.put("Jumlah Transaksi",getTambah);
+            transaksi.put("Jumlah Transaksi",penarikan);
             transaksi.put("Tanggal Transaksi",getTanggalDP);
 
 
