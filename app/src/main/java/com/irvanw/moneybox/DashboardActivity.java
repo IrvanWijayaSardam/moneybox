@@ -1,5 +1,8 @@
 package com.irvanw.moneybox;
 
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -9,11 +12,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.DocumentReference;
@@ -21,19 +28,35 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.irvanw.moneybox.adapter.RecyclerViewAdapter;
+import com.irvanw.moneybox.model.data_keuangan;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
     private ConstraintLayout Transaksi,Deposit,Settings,ListAkun;
-    private TextView tvNama,tvEmail,tvNoTelp,tvAlamat,tvPassword;
+    private TextView tvNama,tvJumlahSaldo;
+    private ArrayList<data_keuangan> dataKeuangan;
     private ImageView imgPp;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
     private String userId,ppDashboard;
+    public Integer totalSaldo;
 
     private Button btnLogoutTest;
+
+    public Integer getTotalSaldo() {
+        return totalSaldo;
+    }
+
+    public void setTotalSaldo(Integer totalSaldo) {
+        this.totalSaldo = totalSaldo;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +80,11 @@ public class DashboardActivity extends AppCompatActivity {
         Deposit = findViewById(R.id.constraint_deposit);
         Settings = findViewById(R.id.constraint_settings);
         ListAkun = findViewById(R.id.constraint_listAkun);
+        tvJumlahSaldo = findViewById(R.id.tv_jumlahSaldo);
         btnLogoutTest = findViewById(R.id.btnLogoutTest);
 
         retriveData();
+        retriveCollection();
 
 
         btnLogoutTest.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +143,47 @@ public class DashboardActivity extends AppCompatActivity {
     private Bitmap decodeFromFirebaseBase64(String image) {
         byte[] decodedByteArray = android.util.Base64.decode(image, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+    }
+
+    private void retriveCollection(){
+        fStore.collection("transaksi").document(userId).collection("detail transaksi").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+
+                            dataKeuangan = new ArrayList<>();
+                            for (QueryDocumentSnapshot document: task.getResult()){
+
+
+                                data_keuangan dKeuangan = new data_keuangan();
+                                dKeuangan.setJenisTransaksi(document.getString("Jenis Transaksi"));
+                                dKeuangan.setJmlTambah(document.getString("Jumlah Transaksi"));
+                                dKeuangan.setTanggal(document.getString("Tanggal Transaksi"));
+                                dataKeuangan.add(dKeuangan);
+                                String sJmlTransaksi = document.getString("Jumlah Transaksi");
+
+                                if(totalSaldo == null){
+                                    totalSaldo = Integer.valueOf(sJmlTransaksi);
+                                    tvJumlahSaldo.setText("Rp. "+totalSaldo.toString());
+                                } else {
+                                    totalSaldo += Integer.valueOf(sJmlTransaksi);
+                                    tvJumlahSaldo.setText("Rp. "+totalSaldo.toString());
+
+                                }
+
+
+                                Log.d(TAG,document.getId()+ " => "+document.getString("Jenis Transaksi"));
+
+                            }
+
+                            setTotalSaldo(totalSaldo);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ",task.getException());
+                        }
+                        Toast.makeText(DashboardActivity.this, "Total Saldo : "+totalSaldo, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     public void goToDeposit(){
