@@ -8,6 +8,7 @@
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/drawable-xxhdpi/back_3_1.xml" value="0.302" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/drawable-xxhdpi/back_4_1.xml" value="0.302" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/drawable-xxhdpi/back_5_1.xml" value="0.302" />
+        <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/drawable/background_rounded.xml" value="0.2705" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/drawable/bg_cardview.xml" value="0.306" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/drawable/bg_dashboard.xml" value="0.306" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/drawable/bg_login.xml" value="0.2695" />
@@ -18,7 +19,7 @@
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/drawable/ic_launcher_background.xml" value="0.306" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/drawable/line.xml" value="0.145" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/drawable/ppborder.xml" value="0.1" />
-        <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/activity_account.xml" value="0.22" />
+        <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/activity_account.xml" value="0.25" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/activity_deposit.xml" value="0.24947916666666667" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/activity_list_data_akun.xml" value="0.15172239108409322" />
@@ -29,6 +30,7 @@
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/activity_transaksi.xml" value="0.1" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/activity_update_account.xml" value="0.1762917933130699" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/activity_update_transaksi.xml" value="0.22" />
+        <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/dashboard_test.xml" value="0.1743659420289855" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/view_account_data.xml" value="0.1" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/view_design_activity.xml" value="0.25" />
         <entry key="..\:/Irvan/Perkuliahan Duniawi/2022/Semester Genap/Pemrograman Mobile/moneybox/app/src/main/res/layout/view_design_akun.xml" value="0.1993006993006993" />
