@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
         };
         thread.start();
+
+
         //goToDashboard();
         //goToLogin();
     }
