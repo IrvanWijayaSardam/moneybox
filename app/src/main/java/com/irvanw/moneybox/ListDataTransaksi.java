@@ -223,7 +223,7 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
                                     recyclerView.setAdapter(adapter);
                                 }
                                 else {
-                                    Toast.makeText(ListDataTransaksi.this, document.getString("Jenis Transaksi"), Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(ListDataTransaksi.this, document.getString("Jenis Transaksi"), Toast.LENGTH_SHORT).show();
                                 }
 
                                 Log.d(TAG,document.getId()+ " => "+document.getString("Jenis Transaksi"));

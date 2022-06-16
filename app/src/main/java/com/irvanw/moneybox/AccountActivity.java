@@ -14,11 +14,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -56,8 +58,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.irvanw.moneybox.model.data_akun;
 
+import java.io.ByteArrayOutputStream;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.android.gms.ads.rewarded.RewardedAd;
 
 public class AccountActivity extends AppCompatActivity {
@@ -71,8 +77,14 @@ public class AccountActivity extends AppCompatActivity {
     private ImageView imgPPA;
     private RewardedAd mRewardedAd;
     private Button btnChangepassword,btnUpdate;
+    private ImageButton IBFoto;
     public  final String TAG = "AccountActivity";
+    private String userID;
+    private String getNama,getEmail,getNope,getAddress,getJk,getGambar;
     FirebaseUser user;
+
+    private static final int REQUEST_IMAGE_CAPTURE = 111;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +93,7 @@ public class AccountActivity extends AppCompatActivity {
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
-                Toast.makeText(AccountActivity.this, "initializationStatus completed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AccountActivity.this, "initializationStatus completed", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -100,7 +112,7 @@ public class AccountActivity extends AppCompatActivity {
                     public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                         mRewardedAd = rewardedAd;
                         Log.d(TAG, "Ad was loaded.");
-                        Toast.makeText(AccountActivity.this, "Add Loaded", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(AccountActivity.this, "Add Loaded", Toast.LENGTH_SHORT).show();
 
                         mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                             @Override
@@ -131,6 +143,7 @@ public class AccountActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userId = fAuth.getCurrentUser().getUid();
+        IBFoto = findViewById(R.id.IBFotoAcc);
 
         user = fAuth.getCurrentUser();
 
@@ -167,10 +180,26 @@ public class AccountActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //clickedUpdateAds():
+                clickedUpdateAds();
+                if(newRbLaki.isChecked()){
+                    getJk = "Laki Laki";
+                    updateAccount();
+                } else if(newRbPerempuan.isChecked()) {
+                    getJk = "Perempuan";
+                    updateAccount();
+
+                } else {
+                    Toast.makeText(AccountActivity.this, "Silahkan Pilih Jenis Kelamin Anda", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
+        IBFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onLaunchCamera();
+            }
+        });
 
         btnChangepassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,6 +240,42 @@ public class AccountActivity extends AppCompatActivity {
 
     }
 
+    private void updateAccount(){
+        getNama = newNama.getText().toString();
+        getEmail = newEmail.getText().toString();
+        getNope = newPhone.getText().toString();
+        getAddress = newAlamat.getText().toString();
+
+        if(getNama.isEmpty() || getAddress.isEmpty() || getNope.isEmpty() || getEmail.isEmpty()){
+            Toast.makeText(this, "Data tidak boleh kosong", Toast.LENGTH_SHORT).show();
+        } else {
+
+            userID = fAuth.getCurrentUser().getUid();
+            DocumentReference documentReference = fStore.collection("users").document(userID);
+            Map<String,Object> user = new HashMap<>();
+            user.put("Nama Lengkap",getNama);
+            user.put("Email",getEmail);
+            user.put("NoTelp",getNope);
+            user.put("Alamat",getAddress);
+            user.put("Jenis Kelamin",getJk);
+            user.put("Profile Picture",getGambar);
+
+            //Toast.makeText(this, getNama+getEmail+getAddress+getJk+getNope+getGambar, Toast.LENGTH_SHORT).show();
+
+            documentReference.update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Log.d(TAG,"onSuccess: user profile is created for "+userID);
+                    Toast.makeText(AccountActivity.this,"User Updated..",Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG,"onFailure : "+e.toString());
+                }
+            });
+        }
+    }
 
     private void clickedUpdateAds(){
         if (mRewardedAd != null) {
@@ -239,11 +304,14 @@ public class AccountActivity extends AppCompatActivity {
                 newPhone.setText(documentSnapshot.getString("NoTelp"));
                 newAlamat.setText(documentSnapshot.getString("Alamat"));
                 ppAccountA = documentSnapshot.getString("Profile Picture");
+                getGambar = documentSnapshot.getString("Profile Picture");
 
                 if(documentSnapshot.getString("Jenis Kelamin").toString().equals("Laki Laki")){
+                    getJk = "Laki Laki";
                     newRbLaki.setChecked(true);
                 } else {
-                    newRbPerempuan.setChecked(false);
+                    getJk = "Perempuan";
+                    newRbPerempuan.setChecked(true);
                 }
 
                 Bitmap imageBitmap = decodeFromFirebaseBase64(ppAccountA);
@@ -262,6 +330,29 @@ public class AccountActivity extends AppCompatActivity {
     private void goToDashboard(){
         Intent intent = new Intent(this,DashboardActivity.class);
         startActivity(intent);
+    }
+
+    private void onLaunchCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+//            mImageLabel.setImageBitmap(imageBitmap);
+            encodeBitmapAndSaveToFirebase(imageBitmap);
+        }
+    }
+    public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        getGambar = imageEncoded;
     }
 
 }

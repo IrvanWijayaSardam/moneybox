@@ -242,26 +242,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-
-
-//    private void checkAccount(){
-//        if(isEmpty(getNama)||isEmpty(getEmail)||isEmpty(getNope)||isEmpty(getAddress)||isEmpty(getJk)||isEmpty(getPassword) ||isEmpty(getGambar)){
-//            Toast.makeText(RegisterActivity.this, "Data Tidak Boleh Kosong !!",Toast.LENGTH_SHORT).show();
-//        } else {
-//
-//            getReference.child("Account").child("Data").push()
-//                    .setValue(new data_akun(getNama,getEmail,getNope,getAddress,getPassword,getJk,getGambar))
-//                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            Toast.makeText(RegisterActivity.this, "Registrasi Berhasil !! Silahkan Login",Toast.LENGTH_SHORT).show();
-//                            goToLogin();
-//                        }
-//                    });
-//
-//        }
-//    }
-
     private void updateAccount(data_akun akun){
         if(isEmpty(getNama)||isEmpty(getEmail)||isEmpty(getNope)||isEmpty(getAddress)||isEmpty(getJk)||isEmpty(getPassword) ||isEmpty(getPassword)){
             Toast.makeText(RegisterActivity.this, "Data Tidak Boleh Kosong Update Account !!",Toast.LENGTH_SHORT).show();
