@@ -1,22 +1,31 @@
 package com.irvanw.moneybox;
 
+import static android.content.ContentValues.TAG;
 import static android.text.TextUtils.isEmpty;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.irvanw.moneybox.model.data_keuangan;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActivityUpdateTransaksi extends AppCompatActivity {
 
@@ -25,6 +34,11 @@ public class ActivityUpdateTransaksi extends AppCompatActivity {
     private Button btnUpdate;
     private DatabaseReference database;
     private String cekJml,cekTgl,cekJenisTransaksi,getJenisTransaksi;
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore fStore;
+    private String userID;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +50,11 @@ public class ActivityUpdateTransaksi extends AppCompatActivity {
         newSpinner = findViewById(R.id.new_spOption);
         btnUpdate = findViewById(R.id.btnUpdateTransaksi);
 
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
         database = FirebaseDatabase.getInstance().getReference();
+        userID = fAuth.getCurrentUser().getUid();
 
         getData();
 
@@ -54,11 +72,11 @@ public class ActivityUpdateTransaksi extends AppCompatActivity {
                     if(cekJenisTransaksi.equals("Tarik Uang")){
                         setKeuangan.setJenisTransaksi(cekJenisTransaksi);
                         setKeuangan.setJmlTambah("-"+jmlBaru.getText().toString());
-                        updateTransaksi(setKeuangan);
+                        updateTransaksi();
                     } else {
                         setKeuangan.setJenisTransaksi(cekJenisTransaksi);
                         setKeuangan.setJmlTambah(jmlBaru.getText().toString());
-                        updateTransaksi(setKeuangan);
+                        updateTransaksi();
                     }
 
                 }
@@ -76,20 +94,32 @@ public class ActivityUpdateTransaksi extends AppCompatActivity {
 
     }
 
-    private void updateTransaksi(data_keuangan transaksi){
+    private void updateTransaksi(){
         String getKey = getIntent().getExtras().getString("getPrimaryKey");
-        database.child("Deposit")
-                .child("Transaksi")
-                .child(getKey)
-                .setValue(transaksi)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(ActivityUpdateTransaksi.this, "Transaksi berhasil di update", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                });
+        Map<String,Object> transaksiUpdate = new HashMap<>();
+        DocumentReference documentReference = fStore.collection("transaksi").document(userID).collection("detail transaksi").document(getKey);
+
+        transaksiUpdate.put("User ID",userID);
+        transaksiUpdate.put("Jenis Transaksi",cekJenisTransaksi);
+        transaksiUpdate.put("Jumlah Transaksi",jmlBaru.getText().toString());
+        transaksiUpdate.put("Tanggal Transaksi",tglLama.getText().toString());
+
+
+        documentReference.update(transaksiUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG,"onSuccess : transaction created for"+userID);
+                Toast.makeText(ActivityUpdateTransaksi.this, "Data Terupdate",Toast.LENGTH_SHORT).show();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG,"onFailure : "+ e.toString());
+            }
+        });
     }
+
 
     private void setSpNewJenis(){
         final String getJenisTransaksi = getIntent().getExtras().getString("dataJenisTransaksi");

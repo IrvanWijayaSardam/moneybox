@@ -19,6 +19,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,8 +46,14 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 public class DepositActivity extends AppCompatActivity {
+
+    private InterstitialAd mInterstitialAd;
+
 
     private EditText jumlahTambah,getDate;
     private Spinner spJenis;
@@ -49,6 +64,7 @@ public class DepositActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
     private String userID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +80,13 @@ public class DepositActivity extends AppCompatActivity {
 
         getDate = findViewById(R.id.edtPilihTanggal);
         getDate.setInputType(InputType.TYPE_NULL);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+        generateAds();
+
 
         getDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +131,66 @@ public class DepositActivity extends AppCompatActivity {
         });
 
     }
+
+    public void generateAds(){
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+
+                        Toast.makeText(DepositActivity.this,"Ad Loaded", Toast.LENGTH_SHORT).show();
+                        interstitialAd.show(DepositActivity.this);
+                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                Toast.makeText(DepositActivity.this, "Faild to show Ad", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                                Toast.makeText(DepositActivity.this,"Ad Shown Successfully",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                Toast.makeText(DepositActivity.this,"Ad Dismissed / Closed",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onAdImpression() {
+                                super.onAdImpression();
+                                Toast.makeText(DepositActivity.this,"Ad Impression Count",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onAdClicked() {
+                                super.onAdClicked();
+                                Toast.makeText(DepositActivity.this,"Ad Clicked",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        Toast.makeText(DepositActivity.this,"Failed to Load Ad because="+loadAdError.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
     private void checkDeposit() {
         if(isEmpty(getTambah) || isEmpty(getTanggalDP) || isEmpty(getJenisTransaksi)) {
             Toast.makeText(DepositActivity.this,"Data Tidak Boleh Kosong ! Silahkan Cek Kembali",Toast.LENGTH_SHORT).show();

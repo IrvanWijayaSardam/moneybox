@@ -188,6 +188,7 @@
         </LinearLayout>
     </LinearLayout>
 
+
     <Button
         android:id="@+id/btnUpdate"
         android:layout_width="0dp"
@@ -202,11 +203,10 @@
         android:textColor="@color/login_form_details_medium"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
-
-
 
     <View
         android:id="@+id/view"

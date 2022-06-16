@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,6 +59,7 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
     public Integer totalSaldo;
 
 
+
     public Integer getTotalSaldo() {
         return totalSaldo;
     }
@@ -70,6 +72,10 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_data_transaksi);
+
+        dataKeuangan = new ArrayList<>();
+
+
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -105,43 +111,14 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
 
         spOptionList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //searchDataByJT(spOptionList.getSelectedItem().toString());
+                searchDataByJT(spOptionList.getSelectedItem().toString());
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {
-                GetData();
+                retriveCollection();
             }
         });
 
-
-
-    }
-    public void GetData() {
-        //Toast.makeText(getApplicationContext(),"Mohon Tunggu Sebentar ...",Toast.LENGTH_SHORT).show();
-
-        reference = FirebaseDatabase.getInstance().getReference();
-        reference.child("Deposit").child("Transaksi")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        dataKeuangan = new ArrayList<>();
-
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            data_keuangan mahasiswa = snapshot.getValue(data_keuangan.class);
-                            mahasiswa.setKey(snapshot.getKey());
-                            dataKeuangan.add(mahasiswa);
-                        }
-                        adapter = new RecyclerViewAdapter(dataKeuangan,ListDataTransaksi.this);
-                        recyclerView.setAdapter(adapter);
-                        //Toast.makeText(getApplicationContext(),"Data Berhasil Dimuat",Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getApplicationContext(),"Data Gagal Dimuat",Toast.LENGTH_LONG).show();
-                        Log.e("MyListActivity",databaseError.getDetails()+" "+databaseError.getMessage());
-                    }
-                });
     }
 
     private void retriveCollection(){
@@ -150,15 +127,13 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            //ArrayList<String> dKeuangan = new ArrayList<String>();
-                            dataKeuangan = new ArrayList<>();
+
                             for (QueryDocumentSnapshot document: task.getResult()){
-
-
                                 data_keuangan dKeuangan = new data_keuangan();
                                 dKeuangan.setJenisTransaksi(document.getString("Jenis Transaksi"));
                                 dKeuangan.setJmlTambah(document.getString("Jumlah Transaksi"));
                                 dKeuangan.setTanggal(document.getString("Tanggal Transaksi"));
+                                dKeuangan.setKey(document.getId());
                                 dataKeuangan.add(dKeuangan);
                                 String sJmlTransaksi = document.getString("Jumlah Transaksi");
 
@@ -171,8 +146,6 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
                                 adapter = new RecyclerViewAdapter(dataKeuangan,ListDataTransaksi.this);
                                 recyclerView.setAdapter(adapter);
 
-
-
                                 Log.d(TAG,document.getId()+ " => "+document.getString("Jenis Transaksi"));
 
                             }
@@ -181,7 +154,7 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
                         } else {
                             Log.d(TAG, "Error getting documents: ",task.getException());
                         }
-                        Toast.makeText(ListDataTransaksi.this, "Total Saldo : "+totalSaldo, Toast.LENGTH_SHORT).show();
+
                     }
                 });
     }
@@ -225,44 +198,64 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
     }
 
     private void searchDataByJT(String JT){
-        reference = FirebaseDatabase.getInstance().getReference();
-        reference.child("Deposit").child("Transaksi").orderByChild("jenisTransaksi").startAt(JT).endAt(JT)
-                .addValueEventListener(new ValueEventListener() {
+        fStore.collection("transaksi").document(userID).collection("detail transaksi").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        dataKeuangan = new ArrayList<>();
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot document: task.getResult()){
+                                if(document.getString("Jenis Transaksi") == JT){
+                                    data_keuangan dKeuangan = new data_keuangan();
+                                    dKeuangan.setJenisTransaksi(document.getString("Jenis Transaksi"));
+                                    dKeuangan.setJmlTambah(document.getString("Jumlah Transaksi"));
+                                    dKeuangan.setTanggal(document.getString("Tanggal Transaksi"));
+                                    dKeuangan.setKey(document.getId());
+                                    dataKeuangan.add(dKeuangan);
+                                    String sJmlTransaksi = document.getString("Jumlah Transaksi");
 
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            data_keuangan akun = snapshot.getValue(data_keuangan.class);
-                            akun.setKey(snapshot.getKey());
-                            dataKeuangan.add(akun);
+                                    if(totalSaldo == null){
+                                        totalSaldo = Integer.valueOf(sJmlTransaksi);
+                                    } else {
+                                        totalSaldo += Integer.valueOf(sJmlTransaksi);
+                                    }
+
+                                    adapter = new RecyclerViewAdapter(dataKeuangan,ListDataTransaksi.this);
+                                    recyclerView.setAdapter(adapter);
+                                }
+                                else {
+                                    Toast.makeText(ListDataTransaksi.this, document.getString("Jenis Transaksi"), Toast.LENGTH_SHORT).show();
+                                }
+
+                                Log.d(TAG,document.getId()+ " => "+document.getString("Jenis Transaksi"));
+
+                            }
+
+                            setTotalSaldo(totalSaldo);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ",task.getException());
                         }
-                        adapter = new RecyclerViewAdapter(dataKeuangan,ListDataTransaksi.this);
-                        recyclerView.setAdapter(adapter);
-                        Toast.makeText(getApplicationContext(),"Data Berhasil Dimuat",Toast.LENGTH_SHORT).show();
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getApplicationContext(),"Data Gagal Dimuat",Toast.LENGTH_LONG).show();
-                        Log.e("MyListActivity",databaseError.getDetails()+" "+databaseError.getMessage());
                     }
                 });
     }
 
     @Override
     public void onDeleteData(data_keuangan data, int position) {
-        if(reference != null){
-            reference.child("Deposit")
-                    .child("Transaksi")
-                    .child(data.getKey())
-                    .removeValue()
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(getApplicationContext(),"Data Berhasil Dihapus",Toast.LENGTH_LONG).show();
-                        }
-                    });
-        }
+
+        fStore.collection("transaksi").document(userID).collection("detail transaksi").document(data.getKey())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(),"Data Berhasil Dihapus",Toast.LENGTH_LONG).show();
+                        retriveCollection();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(),"Data Gagal Dihapus",Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

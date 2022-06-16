@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -82,6 +83,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                             case 1:
                                 listener.onDeleteData(listTransaksi.get(position),position);
+                                Toast.makeText(context, listTransaksi.get(position).getKey(), Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }
