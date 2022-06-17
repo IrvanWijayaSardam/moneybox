@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-
+        <activity
+            android:name=".Insight"
+            android:exported="false" />
         <activity
             android:name=".ListDataAkun"
             android:exported="false" />
@@ -44,11 +46,9 @@
             </intent-filter>
         </activity>
 
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
-
+            android:value="ca-app-pub-3940256099942544~3347511713" />
     </application>
 
 </manifest>

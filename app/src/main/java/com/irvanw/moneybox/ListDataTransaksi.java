@@ -249,6 +249,7 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getApplicationContext(),"Data Berhasil Dihapus",Toast.LENGTH_LONG).show();
                         retriveCollection();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -258,4 +259,5 @@ public class ListDataTransaksi extends AppCompatActivity implements RecyclerView
                     }
                 });
     }
+
 }

@@ -50,9 +50,8 @@ public class DashboardActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
     private String userId,ppDashboard;
-    public Integer totalSaldo;
     private AdView mAdView;
-
+    public Integer totalSaldo = 0;
     private Button btnLogoutTest;
 
     public Integer getTotalSaldo() {
@@ -134,7 +133,7 @@ public class DashboardActivity extends AppCompatActivity {
         ListAkun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToListAkun();
+                goToInsight();
             }
         });
 
@@ -219,10 +218,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     DecimalFormat formatter = new DecimalFormat("#,###,###");
                                     String yourFormattedString = formatter.format(totalSaldo);
                                     tvJumlahSaldo.setText("Rp. "+ yourFormattedString);
-
-
                                 }
-
 
                                 Log.d(TAG,document.getId()+ " => "+document.getString("Jenis Transaksi"));
 
@@ -265,6 +261,11 @@ public class DashboardActivity extends AppCompatActivity {
     public void logout(){
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+    }
+
+    public void goToInsight(){
+        Intent intent = new Intent(this,Insight.class);
+        startActivity(intent);
     }
 
 }

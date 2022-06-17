@@ -247,7 +247,7 @@ public class DepositActivity extends AppCompatActivity {
                 public void onSuccess(Void unused) {
                     Log.d(TAG,"onSuccess : transaction created for"+userID);
                     Toast.makeText(DepositActivity.this, "Data tersimpan",Toast.LENGTH_SHORT).show();
-
+                    goToDashboard();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
