@@ -29,7 +29,6 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -37,11 +36,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.irvanw.moneybox.adapter.RecyclerViewAdapter;
 import com.irvanw.moneybox.model.data_keuangan;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -211,11 +209,17 @@ public class DashboardActivity extends AppCompatActivity {
                                 String sJmlTransaksi = document.getString("Jumlah Transaksi");
 
                                 if(totalSaldo == null){
-                                    totalSaldo = Integer.valueOf(sJmlTransaksi);
-                                    tvJumlahSaldo.setText("Rp. "+totalSaldo.toString());
+                                    totalSaldo += Integer.valueOf(sJmlTransaksi);
+                                    DecimalFormat formatter = new DecimalFormat("#,###,###");
+                                    String yourFormattedString = formatter.format(totalSaldo);
+                                    tvJumlahSaldo.setText("Rp. "+ yourFormattedString);
+
                                 } else {
                                     totalSaldo += Integer.valueOf(sJmlTransaksi);
-                                    tvJumlahSaldo.setText("Rp. "+totalSaldo.toString());
+                                    DecimalFormat formatter = new DecimalFormat("#,###,###");
+                                    String yourFormattedString = formatter.format(totalSaldo);
+                                    tvJumlahSaldo.setText("Rp. "+ yourFormattedString);
+
 
                                 }
 

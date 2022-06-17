@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ListDataTransaksi"
-    android:background="@drawable/bg_cardview"
+    android:background="@drawable/bg_login"
     android:layout_margin="8dp">
 
     <EditText

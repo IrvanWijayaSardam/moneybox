@@ -148,7 +148,7 @@ public class DepositActivity extends AppCompatActivity {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
 
-                        Toast.makeText(DepositActivity.this,"Ad Loaded", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(DepositActivity.this,"Ad Loaded", Toast.LENGTH_SHORT).show();
                         interstitialAd.show(DepositActivity.this);
                         interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                             @Override
@@ -160,25 +160,25 @@ public class DepositActivity extends AppCompatActivity {
                             @Override
                             public void onAdShowedFullScreenContent() {
                                 super.onAdShowedFullScreenContent();
-                                Toast.makeText(DepositActivity.this,"Ad Shown Successfully",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(DepositActivity.this,"Ad Shown Successfully",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onAdDismissedFullScreenContent() {
                                 super.onAdDismissedFullScreenContent();
-                                Toast.makeText(DepositActivity.this,"Ad Dismissed / Closed",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(DepositActivity.this,"Ad Dismissed / Closed",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onAdImpression() {
                                 super.onAdImpression();
-                                Toast.makeText(DepositActivity.this,"Ad Impression Count",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(DepositActivity.this,"Ad Impression Count",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onAdClicked() {
                                 super.onAdClicked();
-                                Toast.makeText(DepositActivity.this,"Ad Clicked",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(DepositActivity.this,"Ad Clicked",Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

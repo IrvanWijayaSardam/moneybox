@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".DashboardActivity"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/bg_login"
     >
 
     <LinearLayout
