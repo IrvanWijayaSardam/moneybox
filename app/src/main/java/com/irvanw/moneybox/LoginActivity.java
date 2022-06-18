@@ -31,12 +31,16 @@ public class LoginActivity extends AppCompatActivity {
         tvEmail = findViewById(R.id.edt_email_login);
         tvPassword = findViewById(R.id.edt_password_login);
         login = findViewById(R.id.btn_login);
-        fAuth = FirebaseAuth.getInstance();
 
+        fAuth = FirebaseAuth.getInstance();
         if(fAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(),DashboardActivity.class));
-            finish();
+            Toast.makeText(this, fAuth.getCurrentUser().toString(), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(),DashboardActivity.class));
+                finish();
+        } else {
+            Toast.makeText(this, "Silahkan Login Terlebih Dahulu", Toast.LENGTH_SHORT).show();
         }
+
         
         login.setOnClickListener(new View.OnClickListener() {
             @Override

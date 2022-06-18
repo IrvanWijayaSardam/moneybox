@@ -31,9 +31,11 @@
             android:name=".DashboardActivity"
             android:exported="false" />
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".LoginActivity"
             android:exported="false" />
         <activity

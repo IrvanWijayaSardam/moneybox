@@ -52,7 +52,6 @@ public class DashboardActivity extends AppCompatActivity {
     private String userId,ppDashboard;
     private AdView mAdView;
     public Integer totalSaldo = 0;
-    private Button btnLogoutTest;
 
     public Integer getTotalSaldo() {
         return totalSaldo;
@@ -74,11 +73,13 @@ public class DashboardActivity extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
 
         if(fAuth.getCurrentUser() == null){
+            Toast.makeText(this, "Anda Harus Login !!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
             finish();
+        } else {
+            retriveData();
+            retriveCollection();
         }
-
-        userId = fAuth.getCurrentUser().getUid();
 
 
         Transaksi = findViewById(R.id.constraint_transaksi);
@@ -86,10 +87,6 @@ public class DashboardActivity extends AppCompatActivity {
         Settings = findViewById(R.id.constraint_settings);
         ListAkun = findViewById(R.id.constraint_listAkun);
         tvJumlahSaldo = findViewById(R.id.tv_jumlahSaldo);
-        btnLogoutTest = findViewById(R.id.btnLogoutTest);
-
-        retriveData();
-        retriveCollection();
 
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
@@ -102,12 +99,6 @@ public class DashboardActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        btnLogoutTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logout();
-            }
-        });
 
         Deposit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +161,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void retriveData(){
+        userId = fAuth.getCurrentUser().getUid();
         DocumentReference documentReference = fStore.collection("users").document(userId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -178,6 +170,7 @@ public class DashboardActivity extends AppCompatActivity {
                 ppDashboard = documentSnapshot.getString("Profile Picture");
                 Bitmap imageBitmap = decodeFromFirebaseBase64(ppDashboard);
                 imgPp.setImageBitmap(imageBitmap);
+                userId = fAuth.getCurrentUser().getUid();
 
             }
         });
@@ -190,6 +183,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void retriveCollection(){
+        userId = fAuth.getCurrentUser().getUid();
         fStore.collection("transaksi").document(userId).collection("detail transaksi").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -228,7 +222,7 @@ public class DashboardActivity extends AppCompatActivity {
                         } else {
                             Log.d(TAG, "Error getting documents: ",task.getException());
                         }
-                        Toast.makeText(DashboardActivity.this, "Total Saldo : "+totalSaldo, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(DashboardActivity.this, "Total Saldo : "+totalSaldo, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -258,10 +252,7 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void logout(){
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-    }
+
 
     public void goToInsight(){
         Intent intent = new Intent(this,Insight.class);

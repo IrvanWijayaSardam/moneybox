@@ -2,6 +2,8 @@ package com.irvanw.moneybox;
 
 import static android.content.ContentValues.TAG;
 
+import static java.lang.Thread.sleep;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -81,6 +83,7 @@ public class AccountActivity extends AppCompatActivity {
     public  final String TAG = "AccountActivity";
     private String userID;
     private String getNama,getEmail,getNope,getAddress,getJk,getGambar;
+    private ImageView logoutButton;
     FirebaseUser user;
 
     private static final int REQUEST_IMAGE_CAPTURE = 111;
@@ -96,7 +99,7 @@ public class AccountActivity extends AppCompatActivity {
                 //Toast.makeText(AccountActivity.this, "initializationStatus completed", Toast.LENGTH_SHORT).show();
             }
         });
-
+        logoutButton = findViewById(R.id.acc_logout);
         AdRequest adRequest = new AdRequest.Builder().build();
 
         RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917",
@@ -150,6 +153,8 @@ public class AccountActivity extends AppCompatActivity {
         if(fAuth.getCurrentUser() == null){
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
             finish();
+        } else {
+            retriveData();
         }
 
         btnChangepassword = findViewById(R.id.btnChangePassword);
@@ -162,7 +167,7 @@ public class AccountActivity extends AppCompatActivity {
         newRbLaki = findViewById(R.id.new_rbLaki);
         newRbPerempuan = findViewById(R.id.new_rbPerempuan);
         imgPPA = findViewById(R.id.img_ppAccountA);
-        retriveData();
+
 
 
 
@@ -176,6 +181,12 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,31 +306,35 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void retriveData(){
-        DocumentReference documentReference = fStore.collection("users").document(userId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                newNama.setText(documentSnapshot.getString("Nama Lengkap"));
-                newEmail.setText(documentSnapshot.getString("Email"));
-                newPhone.setText(documentSnapshot.getString("NoTelp"));
-                newAlamat.setText(documentSnapshot.getString("Alamat"));
-                ppAccountA = documentSnapshot.getString("Profile Picture");
-                getGambar = documentSnapshot.getString("Profile Picture");
+        if(fAuth.getCurrentUser() == null){
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            finish();
+        } else {
+            DocumentReference documentReference = fStore.collection("users").document(userId);
+            documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                    newNama.setText(documentSnapshot.getString("Nama Lengkap"));
+                    newEmail.setText(documentSnapshot.getString("Email"));
+                    newPhone.setText(documentSnapshot.getString("NoTelp"));
+                    newAlamat.setText(documentSnapshot.getString("Alamat"));
+                    ppAccountA = documentSnapshot.getString("Profile Picture");
+                    getGambar = documentSnapshot.getString("Profile Picture");
 
-                if(documentSnapshot.getString("Jenis Kelamin").toString().equals("Laki Laki")){
-                    getJk = "Laki Laki";
-                    newRbLaki.setChecked(true);
-                } else {
-                    getJk = "Perempuan";
-                    newRbPerempuan.setChecked(true);
+                    if(documentSnapshot.getString("Jenis Kelamin").toString().equals("Laki Laki")){
+                        getJk = "Laki Laki";
+                        newRbLaki.setChecked(true);
+                    } else {
+                        getJk = "Perempuan";
+                        newRbPerempuan.setChecked(true);
+                    }
+
+                    Bitmap imageBitmap = decodeFromFirebaseBase64(ppAccountA);
+                    imgPPA.setImageBitmap(imageBitmap);
+
                 }
-
-                Bitmap imageBitmap = decodeFromFirebaseBase64(ppAccountA);
-                imgPPA.setImageBitmap(imageBitmap);
-
-            }
-        });
-
+            });
+        }
     }
 
     private Bitmap decodeFromFirebaseBase64(String image) {
@@ -353,6 +368,21 @@ public class AccountActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
         getGambar = imageEncoded;
+    }
+
+    public void logout(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseAuth.getInstance().signOut();
+
+        if(user != null){
+            Toast.makeText(this, "Logout Berhasil", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "Logout Gagal", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
 }

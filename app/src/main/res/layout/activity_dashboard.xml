@@ -68,12 +68,6 @@
                 app:srcCompat="@drawable/woman"
                 />
 
-            <Button
-                android:id="@+id/btnLogoutTest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Logout Test"
-                app:srcCompat="@drawable/background_top" />
         </LinearLayout>
 
     </LinearLayout>
@@ -318,7 +312,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/teamwork" />
+                                app:srcCompat="@drawable/report" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -33,10 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
         };
         thread.start();
-
-
-        //goToDashboard();
-        //goToLogin();
     }
 
     public void goToDashboard(){
