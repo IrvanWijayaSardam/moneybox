@@ -102,7 +102,7 @@ public class AccountActivity extends AppCompatActivity {
         logoutButton = findViewById(R.id.acc_logout);
         AdRequest adRequest = new AdRequest.Builder().build();
 
-        RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917",
+        RewardedAd.load(this, "ca-app-pub-9987704701774324/6370020897",
                 adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
